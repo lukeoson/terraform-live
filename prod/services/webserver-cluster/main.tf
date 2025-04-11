@@ -2,6 +2,14 @@ provider "aws" {
   region = "us-east-2" 
 }
 
+terraform {
+  backend "s3" {
+    bucket         = "lukeoson-terraform-state-backend"
+    key            = "prod/services/webserver-cluster/terraform.tfstate"
+    region         = "us-east-2"
+  }
+}
+
 module "webserver_cluster" {
   #source = "../../../modules/services/webserver-cluster"
   source = "git::https://github.com/lukeoson/terraform-modules.git//services/webserver-cluster?ref=v0.0.0-alpha"
@@ -12,7 +20,13 @@ module "webserver_cluster" {
 
   instance_type = "t2.micro"
   min_size      = 2
-  max_size      = 2
+  max_size      = 10 
+
+  tags = {
+    Owner     = "team-foo"
+    ManagedBy = "terraform"
+  }
+  
 }
 
 resource "aws_autoscaling_schedule" "scale_out_during_business_hours" {
