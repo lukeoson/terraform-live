@@ -1,10 +1,24 @@
 provider "aws" {
   region = "us-east-2" 
+  default_tags {
+    tags = {
+      Owner     = "Lukeoson"
+      ManagedBy = "Terraform"
+    }
+  }
+}
+
+terraform {
+  backend "s3" {
+    bucket         = "lukeoson-terraform-state-backend"
+    key            = "stage/services/webserver-cluster/terraform.tfstate"
+    region         = "us-east-2"
+  }
 }
 
 module "webserver_cluster" {
   #source = "../../../modules/services/webserver-cluster"
-  source = "git::https://github.com/lukeoson/terraform-modules.git//services/webserver-cluster?ref=v0.0.0-alpha"
+  source = "git::https://github.com/lukeoson/terraform-modules.git//services/webserver-cluster?ref=v0.2.0-aplha"
 
   cluster_name           = "webservers-stage"
   db_remote_state_bucket = "lukeoson-terraform-state-backend"
@@ -13,6 +27,11 @@ module "webserver_cluster" {
   instance_type = "t2.micro"
   min_size      = 2
   max_size      = 2
+  custom_tags = {
+    Owner     = "team-foo-stage"
+    ManagedBy = "terraform"
+  }
+
 }
 resource "aws_security_group_rule" "allow_testing_inbound" {
   type              = "ingress"
