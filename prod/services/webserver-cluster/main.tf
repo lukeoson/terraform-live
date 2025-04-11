@@ -18,7 +18,7 @@ terraform {
 
 module "webserver_cluster" {
   #source = "../../../modules/services/webserver-cluster"
-  source = "git::https://github.com/lukeoson/terraform-modules.git//services/webserver-cluster?ref=v0.1.0-alpha"
+  source = "git::https://github.com/lukeoson/terraform-modules.git//services/webserver-cluster?ref=v0.2.0-aplha"
 
   cluster_name           = "webservers-prod"
   db_remote_state_bucket = "lukeoson-terraform-state-backend"
@@ -28,10 +28,10 @@ module "webserver_cluster" {
   min_size      = 2
   max_size      = 10 
 
-  #custom_tags = {
-  #  Owner     = "team-foo"
-  #  ManagedBy = "terraform"
-  #}
+  custom_tags = {
+    Owner     = "team-foo"
+    ManagedBy = "terraform"
+  }
   
 }
 
