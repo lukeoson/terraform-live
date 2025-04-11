@@ -3,7 +3,8 @@ provider "aws" {
 }
 
 module "webserver_cluster" {
-  source = "../../../modules/services/webserver-cluster"
+  #source = "../../../modules/services/webserver-cluster"
+  source = "https://github.com/lukeoson/terraform-modules/tree/main/services/webserver-cluster?ref=v0.0.0-alpha"
 
   cluster_name           = "webservers-stage"
   db_remote_state_bucket = "lukeoson-terraform-state-backend"
