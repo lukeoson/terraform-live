@@ -10,7 +10,13 @@ terraform {
 }
 
 provider "aws" {
-  region = "us-east-2"
+  region = "us-east-2" 
+  default_tags {
+    tags = {
+      Owner     = "Lukeoson"
+      ManagedBy = "Terraform"
+    }
+  }
 }
 
 module "users" {
